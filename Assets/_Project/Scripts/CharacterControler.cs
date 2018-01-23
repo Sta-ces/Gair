@@ -14,6 +14,7 @@ public class CharacterControler : MonoBehaviour {
     private void Awake()
     {
         m_rigidbody = GetComponent<Rigidbody>();
+        m_rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
 
     private void Update()
@@ -35,9 +36,11 @@ public class CharacterControler : MonoBehaviour {
         float m_jumping = m_rigidbody.velocity.y;
         RaycastHit hitInfo;
 
-        if ( Physics.Raycast(transform.position, Vector3.down, out hitInfo) )
+        if ( Physics.Raycast(transform.position, Vector3.down, out hitInfo, 0.5f) )
         {
-            if ( hitInfo.distance == 1f && Input.GetButtonDown("Jump") )
+            Debug.Log(hitInfo.collider.tag);
+            Debug.DrawRay(transform.position, Vector3.down);
+            if ( /*hitInfo.distance == 1f &&*/ Input.GetButtonDown("Jump") )
                 m_jumping = m_higherJump;
             else
                 m_jumping = m_rigidbody.velocity.y;
